@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import com.fisio.fisio.model.Exercise;
 
 @Component
-public interface ExerciseJpaRepository extends JpaRepository<Exercise, Long>{
+public interface ExerciseJpaRepository extends JpaRepository<Exercise, Long> {
 
 	Exercise findByName(String name);
 
