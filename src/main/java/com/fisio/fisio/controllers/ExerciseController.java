@@ -24,17 +24,25 @@ public class ExerciseController {
 		return exerciseJpaRepository.findAll();
 	}
 
-	@GetMapping(value = "/{name}")
-	public Exercise findByName(@PathVariable final String name) {
-		return exerciseJpaRepository.findByName(name);
+	@GetMapping(value = "/{id}")
+	public Exercise findByName(@PathVariable final Long id) {
+		Optional<Exercise> exerciseFind = exerciseJpaRepository.findById(id);
+		return exerciseFind.orElse(null);
+
 	}
 
 	@PostMapping(value = "/insert")
-	public Exercise insertExercise(@RequestBody final Exercise exercise) {
+	public ResponseEntity<String> insertExercise(@RequestBody final Exercise exercise) {
 		exerciseJpaRepository.save(exercise);
-		return exerciseJpaRepository.findByName(exercise.getName());
+		Exercise exerciseSuccess = exerciseJpaRepository.findByName(exercise.getName());
+		if(exerciseSuccess != null) {
+			return new ResponseEntity<>("Exercício inserido com sucesso.", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("Falha ao inserir", HttpStatus.BAD_REQUEST);
+		}
+		
 	}
-
+	
 	@PutMapping(value = "/{id}/update")
 	public ResponseEntity<Object> updateExercise(@RequestBody final Exercise exercise, @PathVariable final Long id) {
 
@@ -60,7 +68,7 @@ public class ExerciseController {
 		}
 
 		exerciseJpaRepository.deleteById(exerciseDelete.get().getId());
-		
+
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 
 	}
