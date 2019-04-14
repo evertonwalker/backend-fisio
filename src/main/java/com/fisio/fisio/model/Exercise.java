@@ -16,8 +16,18 @@ public class Exercise {
 
 	String description;
 
+	Exercise() {
+
+	}
+
+	Exercise(String name, String description) {
+		this.name = name;
+		this.description = description;
+
+	}
+
 	public Long getId() {
-		return id;	
+		return id;
 	}
 
 	public void setId(Long id) {
@@ -38,6 +48,13 @@ public class Exercise {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public void update(Exercise exercise) {
+		if(exercise != null) {
+			this.name = exercise.getName();
+			this.description = exercise.getDescription();
+		}
 	}
 
 }

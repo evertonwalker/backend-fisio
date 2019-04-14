@@ -9,5 +9,7 @@ import com.fisio.fisio.model.Exercise;
 public interface ExerciseJpaRepository extends JpaRepository<Exercise, Long> {
 
 	Exercise findByName(String name);
-
+	
+	Boolean existsByName(String name);
+	
 }
