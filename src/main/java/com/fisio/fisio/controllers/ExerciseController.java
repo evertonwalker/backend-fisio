@@ -5,10 +5,13 @@ import com.fisio.fisio.service.ExerciseService;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("api/exercise")
@@ -30,7 +33,7 @@ public class ExerciseController {
 
 	@PostMapping(value = "/insert")
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public Exercise insertExercise(@RequestBody final Exercise exercise) {
+	public Exercise insertExercise(@RequestBody @Valid final Exercise exercise) {
 		return this.exerciseService.create(exercise);
 	}
 

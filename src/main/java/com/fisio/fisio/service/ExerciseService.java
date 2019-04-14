@@ -22,7 +22,7 @@ public class ExerciseService {
 		if (this.existsExerciseSameName(exercise.getName())) {
 			throw new ExerciseWithSameName();
 		}
-
+		
 		return exerciseJpaRepository.save(exercise);
 
 	}
