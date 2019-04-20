@@ -51,7 +51,13 @@ public class ExerciseService {
 	}
 
 	public void delete(Long id) {
-		this.exerciseJpaRepository.delete(this.find(id));
+		
+		Optional<Exercise> exerciseFind = exerciseJpaRepository.findById(id);
+		if(!exerciseFind.isPresent()) {
+			throw new ExerciseNotFoundException();
+		}
+		
+		this.exerciseJpaRepository.delete(exerciseFind.get());
 	}
 
 	public List<Exercise> findAll() {
