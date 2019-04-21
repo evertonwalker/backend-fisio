@@ -34,7 +34,7 @@ public class PatientController {
 		return patientService.findAllPatient();
 	}
 	
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = "/{cpf}")
 	public Patient findByCpf(@PathVariable final String cpf) {
 		return patientService.findByCpf(cpf);
 	}
@@ -45,13 +45,13 @@ public class PatientController {
 		return patientService.create(patient);
 	}
 	
-	@PutMapping(value = "/{id}")
+	@PutMapping(value = "/{cpf}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public Patient update(@PathVariable final String cpf, @RequestBody @Valid Patient patient) {
 		return patientService.update(patient);
 	}
 	
-	@DeleteMapping(value = "/{id}")
+	@DeleteMapping(value = "/{cpf}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable final String cpf) {
 		patientService.delete(cpf);

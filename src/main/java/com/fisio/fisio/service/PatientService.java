@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.fisio.fisio.exception.PatientNotFoundException;
 import com.fisio.fisio.exception.PatientWithSameCpfException;
 import com.fisio.fisio.model.Patient;
 import com.fisio.fisio.repository.PatientJpaRepository;
 
+@Service
 public class PatientService {
 
 	@Autowired
@@ -29,9 +31,9 @@ public class PatientService {
 
 		Patient patientFind = findByCpf(patient.getCpf());
 			
-		if (verifySameCpf(patient.getCpf())) {
+		if(patientFind.getCpf() != patient.getCpf() && verifySameCpf(patient.getCpf())) {
 			throw new PatientWithSameCpfException();
-		}
+		} 
 
 		patientFind.update(patient);
 
@@ -42,7 +44,7 @@ public class PatientService {
 	public Patient findByCpf(String cpf) {
 		Optional<Patient> patient = patientRepository.findById(cpf);
 
-		if (!patient.isEmpty()) {
+		if (patient.isEmpty()) {
 			throw new PatientNotFoundException();
 		}
 		return patient.get();

@@ -1,30 +1,39 @@
 package com.fisio.fisio.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+
+import org.hibernate.validator.constraints.br.CPF;
 
 @Entity
 public class Patient {
-	
+
 	@Id
+	@CPF(message = "O Formato do cpf não está correto.")
 	private String cpf;
-	
-	@Column(unique=false)
+
+	@Column(unique = false)
 	@NotBlank(message = "O paciente deve possuir um nome.")
 	private String fullName;
-	
-	@NotBlank(message = "O paciente deve possuir a data de nascimento.")
+
 	private Date birthOfDate;
-	
+
+	@Email(message = "O formato do e-mail não está correto")
 	@NotBlank(message = "O paciente deve possuir um e-mail para contato.")
 	private String email;
-	
+
 	@NotBlank(message = "O paciente deve possuir um telefone para contato.")
 	private String cellPhone;
+
+	@OneToMany
+	List<Schedule> schedules;
 
 	public String getCpf() {
 		return cpf;
@@ -65,9 +74,17 @@ public class Patient {
 	public void setCellPhone(String cellPhone) {
 		this.cellPhone = cellPhone;
 	}
-	
+
+	public List<Schedule> getSchedules() {
+		return schedules;
+	}
+
+	public void setSchedules(List<Schedule> schedules) {
+		this.schedules = schedules;
+	}
+
 	public void update(Patient patient) {
-		if(patient != null) {
+		if (patient != null) {
 			this.cpf = patient.getCpf();
 			this.fullName = patient.getFullName();
 			this.birthOfDate = patient.getBirthOfDate();
@@ -75,6 +92,5 @@ public class Patient {
 			this.cellPhone = patient.getCellPhone();
 		}
 	}
-	
-	
+
 }

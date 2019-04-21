@@ -1,10 +1,14 @@
 package com.fisio.fisio.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
+
 
 @Entity
 public class Exercise {
@@ -13,11 +17,13 @@ public class Exercise {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
 	
-	
 	@NotBlank(message = "O exercício deve possuir um nome.")
 	String name;
 
 	String description;
+	
+	@ManyToMany
+	List<Schedule> schedules;
 
 	Exercise() {
 
@@ -60,4 +66,14 @@ public class Exercise {
 		}
 	}
 
+	public List<Schedule> getSchedules() {
+		return schedules;
+	}
+
+	public void setSchedules(List<Schedule> schedules) {
+		this.schedules = schedules;
+	}
+	
+	
+	
 }
