@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,7 +28,7 @@ public class Schedule {
 	private Date endDate;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "exercise_schedules", joinColumns = @JoinColumn(name = "exercises_id"), inverseJoinColumns = @JoinColumn(name = "schedules_id"))
+	@JoinTable(name = "exercise_schedules", joinColumns = @JoinColumn(name = "schedules_id"), inverseJoinColumns = @JoinColumn(name = "exercises_id"))
 	private List<Exercise> exercises = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.EAGER)

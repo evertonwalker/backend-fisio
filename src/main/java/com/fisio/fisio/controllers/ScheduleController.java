@@ -27,32 +27,30 @@ public class ScheduleController {
 
 	@RequestMapping("/")
 	public List<Schedule> getAll() {
-		List<Schedule> list = scheduleService.getAll();
-		return list;
+		return scheduleService.getAll();
 	}
-	
+
 	@RequestMapping("/{id}")
 	public Schedule getFindById(@PathVariable Long id) {
 		return scheduleService.findById(id);
 	}
-	
+
 	@PostMapping("/")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public Schedule insert(@RequestBody @Valid Schedule schedule) {
 		return scheduleService.create(schedule);
 	}
-	
+
 	@PutMapping("/{id}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public Schedule update(@RequestBody @Valid Schedule schedule, @PathVariable Long id) {
 		return scheduleService.update(schedule, id);
 	}
-	
-	@DeleteMapping("/id")
+
+	@DeleteMapping("/{id}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long id) {
 		scheduleService.deleteSchedule(id);
 	}
-	
 
 }

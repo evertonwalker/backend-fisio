@@ -1,6 +1,5 @@
 package com.fisio.fisio.service;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -21,14 +20,21 @@ public class ScheduleService {
 
 	public Schedule create(Schedule schedule) {
 		
-		verifySamePeriod(schedule.getStartDate(), schedule.getEndDate());
+		if (verifySamePeriod(schedule.getStartDate(), schedule.getEndDate()) != null) {
+			throw new ScheduleInSamePeriodException();
+		}
 		return scheduleJpaRepository.save(schedule);
 	}
 
 	public Schedule update(Schedule schedule, Long id) {
 
 		Schedule scheduleFind = findById(id);
-		verifySamePeriod(schedule.getStartDate(), schedule.getEndDate());
+		
+		if (verifySamePeriod(schedule.getStartDate(), schedule.getEndDate()) != null
+				&& verifySamePeriod(schedule.getStartDate(), schedule.getEndDate()).getId() != schedule.getId()) {
+			throw new ScheduleInSamePeriodException();
+		}
+		
 		scheduleFind.update(schedule);
 
 		return scheduleJpaRepository.save(scheduleFind);
@@ -41,20 +47,15 @@ public class ScheduleService {
 	public Schedule findById(Long id) {
 
 		Optional<Schedule> scheduleFind = scheduleJpaRepository.findById(id);
-		if (scheduleFind.isEmpty()) {
+		if (!scheduleFind.isPresent()) {
 			throw new ScheduleNotFoundException();
 		}
 
 		return scheduleFind.get();
 	}
 
-	private Boolean verifySamePeriod(Date startDate, Date endDate) {
-		
-		if(!scheduleJpaRepository.findBetweenRange(startDate, endDate).isEmpty()) {
-			throw new ScheduleInSamePeriodException();
-		}
-		
-		return false;
+	private Schedule verifySamePeriod(Date startDate, Date endDate) {
+		return scheduleJpaRepository.findBetweenRange(startDate, endDate);
 	}
 
 	public void deleteSchedule(Long id) {

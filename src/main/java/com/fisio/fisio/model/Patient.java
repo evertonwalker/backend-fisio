@@ -14,6 +14,8 @@ import javax.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.br.CPF;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity(name="Patient")
 @Table(name="patient")
 public class Patient {
@@ -36,6 +38,7 @@ public class Patient {
 	private String cellPhone;
 
 	@OneToMany(mappedBy="patient", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
 	List<Schedule> schedules;
 
 	public String getCpf() {

@@ -1,6 +1,5 @@
 package com.fisio.fisio.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity(name = "Exercise")
 @Table(name = "exercise")
@@ -26,8 +28,8 @@ public class Exercise {
 	String description;
 
 	@ManyToMany(mappedBy = "exercises", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	
-	List<Schedule> schedules = new ArrayList<>();
+	@JsonIgnore
+	List<Schedule> schedules;
 
 	Exercise() {
 

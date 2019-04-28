@@ -21,7 +21,8 @@ public class ExerciseController {
 	
 	@GetMapping(value = "/")
 	public List<Exercise> findAll() {
-		return exerciseService.findAll();
+		List<Exercise> list =  exerciseService.findAll();
+		return list;
 	}
 
 	@GetMapping(value = "/{id}")

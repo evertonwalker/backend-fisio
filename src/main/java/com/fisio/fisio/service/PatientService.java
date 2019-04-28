@@ -44,7 +44,7 @@ public class PatientService {
 	public Patient findByCpf(String cpf) {
 		Optional<Patient> patient = patientRepository.findById(cpf);
 
-		if (patient.isEmpty()) {
+		if (!patient.isPresent()) {
 			throw new PatientNotFoundException();
 		}
 		return patient.get();
