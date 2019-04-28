@@ -3,16 +3,19 @@ package com.fisio.fisio.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.br.CPF;
 
-@Entity
+@Entity(name="Patient")
+@Table(name="patient")
 public class Patient {
 
 	@Id
@@ -32,7 +35,7 @@ public class Patient {
 	@NotBlank(message = "O paciente deve possuir um telefone para contato.")
 	private String cellPhone;
 
-	@OneToMany
+	@OneToMany(mappedBy="patient", cascade = CascadeType.ALL, orphanRemoval = true)
 	List<Schedule> schedules;
 
 	public String getCpf() {

@@ -1,16 +1,23 @@
 package com.fisio.fisio.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-@Entity
+@Entity(name = "Schedule")
+@Table(name = "schedule")
 public class Schedule {
 
 	@Id
@@ -21,10 +28,12 @@ public class Schedule {
 
 	private Date endDate;
 
-	@ManyToMany(mappedBy = "schedules")
-	private List<Exercise> exercises;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "exercise_schedules", joinColumns = @JoinColumn(name = "exercises_id"), inverseJoinColumns = @JoinColumn(name = "schedules_id"))
+	private List<Exercise> exercises = new ArrayList<>();
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "patient_cpf")
 	private Patient patient;
 
 	public Long getId() {

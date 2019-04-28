@@ -27,7 +27,8 @@ public class ScheduleController {
 
 	@RequestMapping("/")
 	public List<Schedule> getAll() {
-		return scheduleService.getAll();
+		List<Schedule> list = scheduleService.getAll();
+		return list;
 	}
 	
 	@RequestMapping("/{id}")
