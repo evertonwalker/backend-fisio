@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.fisio.fisio.exception.ScheduleEndPeriodBiggerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,11 @@ public class ScheduleService {
 	ScheduleJpaRepository scheduleJpaRepository;
 
 	public Schedule create(Schedule schedule) {
-		
+
+		if(schedule.getStartDate().getTime() > schedule.getEndDate().getTime()){
+			throw  new ScheduleEndPeriodBiggerException();
+		}
+
 		if (verifySamePeriod(schedule.getStartDate(), schedule.getEndDate()) != null) {
 			throw new ScheduleInSamePeriodException();
 		}
