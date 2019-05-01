@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.fisio.fisio.exception.ScheduleInSamePeriodException;
 import com.fisio.fisio.exception.ScheduleNotFoundException;
+import com.fisio.fisio.exception.ScheduleSameTimeException;
 import com.fisio.fisio.model.Schedule;
 import com.fisio.fisio.repository.ScheduleJpaRepository;
 
@@ -21,25 +22,26 @@ public class ScheduleService {
 
 	public Schedule create(Schedule schedule) {
 
-		if(schedule.getStartDate().getTime() > schedule.getEndDate().getTime()){
-			throw  new ScheduleEndPeriodBiggerException();
-		}
+		verifyPeriodLessThanOrSame(schedule.getStartDate(), schedule.getEndDate());
 
 		if (verifySamePeriod(schedule.getStartDate(), schedule.getEndDate()) != null) {
 			throw new ScheduleInSamePeriodException();
 		}
+		
 		return scheduleJpaRepository.save(schedule);
 	}
 
 	public Schedule update(Schedule schedule, Long id) {
 
 		Schedule scheduleFind = findById(id);
-		
+
+		verifyPeriodLessThanOrSame(schedule.getStartDate(), schedule.getEndDate());
+
 		if (verifySamePeriod(schedule.getStartDate(), schedule.getEndDate()) != null
 				&& verifySamePeriod(schedule.getStartDate(), schedule.getEndDate()).getId() != schedule.getId()) {
 			throw new ScheduleInSamePeriodException();
 		}
-		
+
 		scheduleFind.update(schedule);
 
 		return scheduleJpaRepository.save(scheduleFind);
@@ -65,6 +67,17 @@ public class ScheduleService {
 
 	public void deleteSchedule(Long id) {
 		scheduleJpaRepository.delete(findById(id));
+	}
+
+	public void verifyPeriodLessThanOrSame(Date initDate, Date finalDate) {
+		if (initDate.compareTo(finalDate) == 0) {
+			throw new ScheduleSameTimeException();
+		}
+
+		if (initDate.getTime() > finalDate.getTime()) {
+			throw new ScheduleEndPeriodBiggerException();
+		}
+
 	}
 
 }

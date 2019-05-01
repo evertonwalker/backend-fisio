@@ -14,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity(name = "Schedule")
 @Table(name = "schedule")
@@ -23,16 +25,20 @@ public class Schedule {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@NotNull(message = "O data inicial não pode está vazia.")
 	private Date startDate;
 
+	@NotNull(message = "O data final não pode está vazia.")
 	private Date endDate;
 
+	@NotEmpty(message = "É necessário selecionar os exercícios.")
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "exercise_schedules", joinColumns = @JoinColumn(name = "schedules_id"), inverseJoinColumns = @JoinColumn(name = "exercises_id"))
 	private List<Exercise> exercises = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "patient_cpf")
+	@NotNull(message = "É necessário selecionar um paciente.")
 	private Patient patient;
 
 	public Long getId() {
