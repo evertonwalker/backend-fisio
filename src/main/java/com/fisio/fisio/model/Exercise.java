@@ -21,7 +21,7 @@ public class Exercise {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
-
+	
 	@NotBlank(message = "O exercício deve possuir um nome.")
 	String name;
 

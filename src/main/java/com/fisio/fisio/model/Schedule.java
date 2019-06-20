@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -40,6 +42,20 @@ public class Schedule {
 	@JoinColumn(name = "patient_cpf")
 	@NotNull(message = "É necessário selecionar um paciente.")
 	private Patient patient;
+	
+	private String color;
+	
+	@Enumerated(EnumType.STRING)
+	private Status status;
+	
+	
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 
 	public Long getId() {
 		return id;
@@ -87,8 +103,18 @@ public class Schedule {
 			this.endDate = schedule.getEndDate();
 			this.patient = schedule.getPatient();
 			this.exercises = schedule.getExercises();
+			this.status = schedule.getStatus();
+			this.color = schedule.getColor();
 		}
 		return schedule;
 	}
 
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+	
 }
